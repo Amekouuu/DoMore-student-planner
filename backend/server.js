@@ -32,3 +32,19 @@ app.use('/api', require('./routes/auth'));
 app.listen(serv, () => {
   console.log(`Server running on http://localhost:${serv}`);
 });
+
+
+// test
+app.get('/api/_routes', (req, res) => {
+  const routes = [];
+  app._router.stack.forEach(mw => {
+    if (mw.route) {
+      routes.push({ path: mw.route.path, methods: mw.route.methods });
+    } else if (mw.name === 'router') {
+      mw.handle.stack.forEach(h => {
+        if (h.route) routes.push({ path: h.route.path, methods: h.route.methods });
+      });
+    }
+  });
+  res.json(routes);
+});
