@@ -48,3 +48,11 @@ app.get('/api/_routes', (req, res) => {
   });
   res.json(routes);
 });
+
+app.get('/api/whoami', (req, res) => {
+  res.json({
+    ok: true,
+    message: 'backend is running THIS build',
+    time: new Date().toISOString()
+  });
+});
