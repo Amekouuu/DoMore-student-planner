@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const serv = process.env.serv || 3000;
+const serv = process.env.PORT || 3000;
 
 require('./config/database');
 
