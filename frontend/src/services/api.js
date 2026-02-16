@@ -3,7 +3,8 @@ import router from '../routing/router.js';
 
 // Base API URL from environment variable
 const API_URL = `${import.meta.env.VITE_API_URL}/api`;
-
+console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
+console.log("API_URL used by axios =", API_URL);
 const api = axios.create({
     baseURL: API_URL,
     headers: {
