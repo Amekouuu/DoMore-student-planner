@@ -1,3 +1,12 @@
+DoMore Student Planner
+
+A student planning web application that allows users to create folders, events, and manage files.
+
+This project demonstrates a deployed Vue + Node + MongoDB architecture with separate frontend and backend hosting.
+
+Frontend - Deployed via Netlify
+Backend - Deployed via Mongo Atlas and Render
+
 **INSTALL DEPENDENCIES BEFORE RUNNING THE CODE**
 
 _cd backend; npm install express mongoose_
