@@ -1,7 +1,8 @@
 import axios from 'axios';
 import router from '../routing/router.js';
 
-const API_URL = 'http://localhost:3000/api';
+// Base API URL from environment variable
+const API_URL = `${import.meta.env.VITE_API_URL}/api`;
 
 const api = axios.create({
     baseURL: API_URL,
@@ -10,7 +11,7 @@ const api = axios.create({
     },
 });
 
-let isRedirecting = false; 
+let isRedirecting = false;
 
 api.interceptors.request.use(
     (config) => {
@@ -31,16 +32,18 @@ api.interceptors.response.use(
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('authToken');
             localStorage.removeItem('user');
-            
+
             if (!isRedirecting) {
-                isRedirecting = true;            
-                router.push({ name: 'Login' }).catch(err => {
-                    if (err.name !== 'NavigationDuplicated') {
-                        console.error('Router push error after 401:', err);
-                    }
-                }).finally(() => {
-                    isRedirecting = false;
-                });
+                isRedirecting = true;
+                router.push({ name: 'Login' })
+                    .catch(err => {
+                        if (err.name !== 'NavigationDuplicated') {
+                            console.error('Router push error after 401:', err);
+                        }
+                    })
+                    .finally(() => {
+                        isRedirecting = false;
+                    });
             }
         }
         return Promise.reject(error);
