@@ -1,18 +1,25 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const serv = process.env.PORT || 3000;
 
 require('./config/database');
 
 const app = express();
+const serv = process.env.PORT || 3000;
 
+/* ========================
+   Middleware
+======================== */
 app.use(cors());
 app.use(express.json());
+
 app.use(express.static(path.join(__dirname, 'client')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/avatars', express.static(path.join(__dirname, 'avatars')));
 
+/* ========================
+   Basic routes
+======================== */
 app.get('/', (req, res) => {
   console.log('GET / - Serving index.html');
   res.sendFile(path.join(__dirname, 'client', 'index.html'));
@@ -23,18 +30,20 @@ app.get('/api/status', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+/* ========================
+   API routes
+======================== */
 app.use('/api/folders', require('./routes/folders'));
 app.use('/api/events', require('./routes/events'));
 app.use('/api/files', require('./routes/files'));
 app.use('/api/user', require('./routes/user'));
-app.use('/api', require('./routes/auth'));
+app.use('/api', require('./routes/auth')); // <-- login/signup mounted here
 
-app.listen(serv, () => {
-  console.log(`Server running on http://localhost:${serv}`);
-});
+/* ========================
+   Debug routes
+======================== */
 
-
-// test
+// list all registered routes
 app.get('/api/_routes', (req, res) => {
   const routes = [];
   app._router.stack.forEach(mw => {
@@ -49,6 +58,7 @@ app.get('/api/_routes', (req, res) => {
   res.json(routes);
 });
 
+// confirm running build
 app.get('/api/whoami', (req, res) => {
   res.json({
     ok: true,
@@ -60,6 +70,13 @@ app.get('/api/whoami', (req, res) => {
 app.get('/api/debug', (req, res) => {
   res.json({
     message: 'This is the LIVE backend',
-    time: new Date(),
+    time: new Date()
   });
+});
+
+/* ========================
+   Start server
+======================== */
+app.listen(serv, () => {
+  console.log(`Server running on port ${serv}`);
 });
