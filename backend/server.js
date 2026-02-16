@@ -56,3 +56,10 @@ app.get('/api/whoami', (req, res) => {
     time: new Date().toISOString()
   });
 });
+
+app.get('/api/debug', (req, res) => {
+  res.json({
+    message: 'This is the LIVE backend',
+    time: new Date(),
+  });
+});
